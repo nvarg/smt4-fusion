@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from sqlalchemy import Column, ForeignKey, types
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy_serializer import SerializerMixin
 
 from ..flask_extensions import db
 from .demons import Demon
@@ -17,8 +18,10 @@ class Ingredient(db.Model):
     fusion = relationship('Fusion')
 
 @dataclass
-class Fusion(db.Model):
+class Fusion(db.Model, SerializerMixin):
     __tablename__ = 'fusion'
+    serialize_only = ('ingredients.id', 'result.id', 'ingredients.name', 'result.name', 'ingredients.race', 'result.race')
+    serialize_rules = ()
 
     id = Column(types.Integer, primary_key=True, autoincrement=True)
 
@@ -30,7 +33,3 @@ class Fusion(db.Model):
 
     def __repr__(self):
         return f'Fusion({" + ".join(ing.name for ing in self.ingredients)} = {self.result.name})'
-
-
-    def __iter__(self):
-        return dict_helper(self)

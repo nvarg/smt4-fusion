@@ -2,6 +2,7 @@ from enum import Enum
 from sqlalchemy import Column, ForeignKey, types
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy_serializer import SerializerMixin
 
 from ..flask_extensions import db
 from .utils import dict_helper
@@ -40,8 +41,10 @@ class Type(Enum):
     Light = 'Light'
 
 
-class Skill(db.Model):
+class Skill(db.Model, SerializerMixin):
     __tablename__ = "skill"
+    serialize_only = ('name', 'type', 'target', 'damage',
+                      'hits', 'effect', 'demons.id', 'demons.name')
 
     id = Column(types.Integer, primary_key=True, autoincrement=True)
     name = Column(types.String, nullable=False)
@@ -59,12 +62,9 @@ class Skill(db.Model):
         return f'Skill({self.name})'
 
 
-    def __iter__(self):
-        return dict_helper(self)
-
-
-class LearnSkill(db.Model):
+class LearnSkill(db.Model, SerializerMixin):
     __tablename__ = 'learn_skill'
+    serialize_only = ('level', 'demon.name', 'demon.id', 'skill.name', 'skill.id')
 
     demon_id = Column(types.SmallInteger, ForeignKey('demon.id'), nullable=False, primary_key=True)
     skill_id = Column(types.SmallInteger, ForeignKey('skill.id'), nullable=False, primary_key=True)
@@ -77,7 +77,3 @@ class LearnSkill(db.Model):
 
     def __repr__(self):
         return f'LearnSkill({self.demon.name}, {self.skill.name}, {self.level})'
-
-
-    def __iter__(self):
-        return dict_helper(self)

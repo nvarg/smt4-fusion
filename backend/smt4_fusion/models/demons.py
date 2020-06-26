@@ -3,6 +3,7 @@ from functools import reduce
 from sqlalchemy import Column, types
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy_serializer import SerializerMixin
 
 from ..flask_extensions import db
 from .utils import dict_helper
@@ -84,8 +85,10 @@ class Resist:
 
 
 
-class Demon(db.Model):
+class Demon(db.Model, SerializerMixin):
     __tablename__ = 'demon'
+    serialize_only = ('id', 'name', 'race', 'level', 'fusion_uses.id', 'fusion_recipes.id')
+    serialize_rules = ()
 
     id = Column(types.Integer, primary_key=True, autoincrement=True)
     name = Column(types.String, nullable=False)
@@ -109,7 +112,3 @@ class Demon(db.Model):
 
     def __repr__(self):
         return f'Demon({self.name})'
-
-
-    def __iter__(self):
-        return dict_helper(self)
