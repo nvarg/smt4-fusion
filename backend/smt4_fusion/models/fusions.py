@@ -6,7 +6,6 @@ from sqlalchemy_serializer import SerializerMixin
 
 from ..flask_extensions import db
 from .demons import Demon
-from .utils import dict_helper
 
 class Ingredient(db.Model):
     __tablename__ = 'ingredient'
