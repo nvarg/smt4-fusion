@@ -1,0 +1,5 @@
+flask
+Flask-CORS
+Flask-SQLAlchemy
+SQLAlchemy-serializer
+webargs
