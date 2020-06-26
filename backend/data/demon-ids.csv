@@ -1,0 +1,537 @@
+0,???
+1,Metatron
+2,Sraosha
+3,Azrael
+4,Israfel
+5,Victor
+6,Amaterasu
+7,Lakshmi
+8,Tlazolteotl
+9,Pallas Athena
+10,Scathach
+11,Parvati
+12,Fortuna
+13,Hathor
+14,Garuda
+15,Yatagarasu
+16,Feng Huang
+17,Thunderbird
+18,Phoenix
+19,Suparna
+20,Hamsa
+21,Yggdrasil
+22,Haoma
+23,Kukunochi
+24,Mayahuel
+25,Daphne
+26,Cherub
+27,Throne
+28,Dominion
+29,Virtue
+30,Power
+31,Principality
+32,Archangel
+33,Angel
+34,Da Peng
+35,Rukh
+36,Tangata Manu
+37,Caladrius
+38,Gu Huo Niao
+39,Harpy
+40,Tuofei
+41,Ganesha
+42,Xiuhtecuhtli
+43,Valkyrie
+44,Shiwanna
+45,Dis
+46,Karasu Tengu
+47,Vodyanik
+48,Koppa Tengu
+49,Peri
+50,Sarasvati
+51,Senri
+52,Ame no Uzume
+53,Apsaras
+54,Seth
+55,Samael
+56,Pales
+57,Taotie
+58,Pachacamac
+59,Mishaguji
+60,Baphomet
+61,Hresvelgr
+62,Huoniao
+63,Anzu
+64,Gurr
+65,Zhen
+66,Camazotz
+67,Moh Shuvuu
+68,Itsumade
+69,Onmoraki
+70,Erlkonig
+71,Alraune
+72,Zaccoum
+73,Skogsra
+74,Mandrake
+75,Shan Xiao
+76,Mahamayuri
+77,Prometheus
+78,Hachiman
+79,Odin
+80,Ometeotl
+81,Inti
+82,Thoth
+83,Barong
+84,Anubis
+85,Chimera
+86,Kaiming Shou
+87,Makami
+88,Kamapua'a
+89,Shiisaa
+90,Sphinx
+91,Sleipnir
+92,Baihu
+93,Airavata
+94,Qing Niugai
+95,Pabilsag
+96,Apis
+97,Heqet
+98,Heimdall
+99,Hanuman
+100,Cu Chulainn
+101,Tlaloc
+102,Tam Lin
+103,Titania
+104,Oberon
+105,Vivian
+106,Spriggan
+107,Silky
+108,Pyro Jack
+109,Jack Frost
+110,Goblin
+111,Pixie
+112,Cerberus
+113,Ammut
+114,Gryphon
+115,Orthrus
+116,Hsing-Hsing
+117,Nekomata
+118,Inugami
+119,Katakirauwa
+120,Kaso
+121,Gogmagog
+122,Tlaltecuhtli
+123,Titan
+124,Kwancha
+125,Sudama
+126,Dwarf
+127,Hua Po
+128,Knocker
+129,Ananta
+130,Orochi
+131,Gui Xian
+132,Yurlungur
+133,Vouivre
+134,Nozuchi
+135,Naga
+136,Mot
+137,Nergal
+138,Guedhe
+139,Persephone
+140,Hel
+141,Fenrir
+142,Cabracan
+143,Catoblepas
+144,Manticore
+145,Peallaidh
+146,Nue
+147,Raijuu
+148,Jueyuan
+149,Hekatoncheires
+150,Girimehkala
+151,Grendel
+152,Rakshasa
+153,Wendigo
+154,Ippon-Datara
+155,Gremlin
+156,Arachne
+157,Mothman
+158,Myrmecolion
+159,Okiku-Mushi
+160,Ubu
+161,Susano-o
+162,Kartikeya
+163,Wu Kong
+164,Tonatiuh
+165,Ares
+166,Xi Wangmu
+167,Black Maria
+168,Skadi
+169,Diana
+170,Hariti
+171,Sedna
+172,Dzelarhons
+173,Pele
+174,Quetzalcoatl
+175,Zhu Yin
+176,Long
+177,Gucumatz
+178,Patrimpas
+179,Makara
+180,Thor
+181,Bishamonten
+182,Jikokuten
+183,Koumokuten
+184,Zouchouten
+185,Take-Minakata
+186,Gemori
+187,Decarabia
+188,Ose
+189,Dantalion
+190,Orias
+191,Halphas
+192,Bifrons
+193,Melchom
+194,Berserker
+195,Fuu-Ki
+196,Sui-Ki
+197,Kin-Ki
+198,Momunofu
+199,Yamawaro
+200,Azumi
+201,Oni
+202,Rangda
+203,Dakini
+204,Atropos
+205,Lachesis
+206,Clotho
+207,Yuki Jyorou
+208,Leanan Sidhe
+209,Dummy
+210,Lilith
+211,Wild Hunt
+212,Succubus
+213,Kaiwan
+214,Incubus
+215,Fomorian
+216,Lilim
+217,Sandman
+218,Mara
+219,Surt
+220,Tzitzimitl
+221,Abaddon
+222,Loki
+223,Balor
+224,Fafnir
+225,Niddhoggr
+226,Mushussu
+227,Kingu
+228,Basilisk
+229,Bai Suzhen
+230,Zhu Tun She
+231,Legion
+232,Pisaca
+233,Macabre
+234,Inferno
+235,Dybbuk
+236,Poltergeist
+237,Dummy
+238,Slime
+239,Vetala
+240,Kudlak
+241,Strigoii
+242,Ghoul
+243,Churel
+244,Mou-Ryo
+245,Preta
+246,Saki Mitama
+247,Kusi Mitama
+248,Nigi Mitama
+249,Ara Mitama
+250,Salamander
+251,Undine
+252,Sylph
+253,Gnome
+254,Flaemis
+255,Aquans
+256,Aeros
+257,Erthys
+258,Trumpeter
+259,Pale Rider
+260,Black Rider
+261,Red Rider
+262,White Rider
+263,Alice
+264,Matador
+265,David
+266,Kangiten
+267,Kama
+268,Kinmamon
+269,Futotama
+270,Kanbari
+271,Hare of Inaba
+272,Kuda
+273,Chupacabra
+274,Mamedanuki
+275,Tezcatlipoca
+276,Attis
+277,Aramisaki
+278,Dionysus
+279,Ogun
+280,???
+281,Mother Harlot
+282,Seraph
+283,Shiva
+284,Huang Long
+285,Norn
+286,Ongyo-Ki
+287,King Frost
+288,Kurama Tengu
+289,Black Frost
+290,Frost Ace
+291,High Pixie
+292,Ouroboros
+293,Moloch
+294,Horkos
+295,Dummy
+296,Tiamat
+297,Morax
+298,Mitra
+299,Mithras
+300,Asura
+301,Alraune
+302,Tsuchigumo
+303,Orcus
+304,Asherah
+305,Xi Wangmu
+306,Peallaidh
+307,Aniel
+308,Sraosha
+309,Maya
+310,Dummy
+311,Mastema
+312,Dummy
+313,Dummy
+314,Dummy
+315,Dummy
+316,Kresnik
+317,Lorelei
+318,Aniel
+319,Kazfiel
+320,Alilat
+321,Demiurge
+322,Minotaur
+323,Medusa
+324,Tenkai
+325,Lilith
+326,Yaso Magatsuhi
+327,Koga Saburo
+328,Omoikane
+329,Michizane
+330,Yamato-Takeru
+331,Lucifer
+332,Merkabah
+333,Shiva
+334,Pluto
+335,Kenji
+336,seigyosouchi
+337,White (Hugeo)
+338,White (K)
+339,White (Isabeau)
+340,White (Issachar)
+341,Dullahan
+342,Kuebiko
+343,Moloch2
+344,Ishtar
+345,Alciel
+346,Asmodeus
+347,Astaroth
+348,Mastema
+349,Demiurge
+350,Demonee-Ho
+351,Dummy
+352,Dummy
+353,Centaur
+354,Kikuri-Hime
+355,Napaea
+356,Michael
+357,Gabriel
+358,Raphael
+359,Uriel
+360,Hairy Jack
+361,Anat
+362,Vidofnir
+363,Narcissus
+364,Kuebiko
+365,Ogre
+366,Koga Saburo
+367,Master Therion
+368,Agathion
+369,Oumitsunu
+370,Fuxi
+371,Hitokoto-Nushi
+372,Apsu
+373,Baal
+374,Lord Nandou
+375,Take-Mikazuchi
+376,Omoikane
+377,Botis
+378,Ukano Mitama
+379,Jarilo
+380,Ictinike
+381,Kelpie
+382,Setanta
+383,Barbatos
+384,Dormarth
+385,Stonka
+386,Cait Sith
+387,Kabuso
+388,Tsuchigumo
+389,Pendragon
+390,Taowu
+391,Porewit
+392,Chagrin
+393,Bilwis
+394,Lham Dearg
+395,Beiji-Weng
+396,Chernobog
+397,Illuyanka
+398,Marici
+399,Zhong Kui
+400,Arahabaki
+401,Kushinada-Hime
+402,Okuninushi
+403,Murmur
+404,Nebiros
+405,Yomotsu-Ikusa
+406,Kali
+407,Shikome
+408,Strix
+409,Asmodeus
+410,Queen Mab
+411,Kikimora
+412,Mokoi
+413,Lucifer
+414,Chi You
+415,Beelzebub
+416,Belial
+417,Astaroth
+418,Samyaza
+419,Ym
+420,Toubyou
+421,Wicker Man
+422,Quicksilver
+423,Dullahan
+424,Chemtrail
+425,Mad Gasser
+426,Patriot
+427,Night Stalker
+428,Hooligan
+429,Jack the Ripper
+430,Enku
+431,Obariyon
+432,Masakado
+433,Huang Di
+434,Tokisada
+435,Rama
+436,Kanseiteikun
+437,Siegfried
+438,Hagen
+439,Jeanne D'Arc
+440,Lanling Wang
+441,Yoshitsune
+442,Dummy
+443,Dummy
+444,Tattooed Man
+445,Walter
+446,Dummy
+447,Dummy
+448,Lucifer2
+449,Zombie Cop
+450,Lucifer2
+451,Jonathan
+452,Minotaur
+453,Dummy
+454,Medusa
+455,Walter
+456,Jonathan
+457,Isabeau
+458,Lucifer
+459,Merkabah
+460,Dummy
+461,Osiris
+462,Isis
+463,Baldur
+464,Izanami
+465,Isabeau
+466,Cernunnos
+467,Azazel
+468,Brigid
+469,Merkabah2
+470,Taraka
+471,Dummy
+472,Dummy
+473,Dummy
+474,Pluto
+475,Ixtab
+476,Garrote
+477,Vishnu
+478,Yaksha
+479,Kenji
+480,
+481,White (Hugo)
+482,White (K)
+483,White (Isabeau)
+484,White (Issachar)
+485,Merkabah
+486,Nata Taishi
+487,Lailah
+488,Nadja
+489,Corpses
+490,Shax
+491,Merkabah 2
+492,Tenkai
+493,Yaso Magatsuhi
+494,Michizane
+495,Yamato-Takeru
+496,Lucifuge
+497,Vasuki
+498,Python
+499,Dummy
+500,Dummy
+501,Dummy
+502,Dummy
+503,Dummy
+504,Dummy
+505,Dummy
+506,Dummy
+507,Dummy
+508,Dummy
+509,Dummy
+510,Dummy
+511,Dummy
+512,Dummy
+513,Dummy
+514,Dummy
+515,Michael
+516,Gabriel
+517,Raphael
+518,Uriel
+519,???
+520,Charon
+521,Orthrus
+522,Azrael
+523,Seraph
+524,Kazfiel
+525,Aniel
+526,Belial
+527,Lucifuge
+528,Asterius
+529,???
+530,???
+531,Aeshma
+532,???
+533,???
+534,Dummy
+535,???
+536,Aeshma
