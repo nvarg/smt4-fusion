@@ -86,8 +86,11 @@ class Resist:
 
 class Demon(db.Model, SerializerMixin):
     __tablename__ = 'demon'
-    serialize_only = ('id', 'name', 'race', 'level', 'fusion_uses.id', 'fusion_recipes.id')
-    serialize_rules = ()
+    serialize_only = (
+        'id', 'name', 'race', 'level', 'health', 'mana',
+        'strength', 'dexterity', 'magic', 'agility', 'luck',
+        'resistances',
+    )
 
     id = Column(types.Integer, primary_key=True, autoincrement=True)
     name = Column(types.String, nullable=False)
@@ -108,6 +111,17 @@ class Demon(db.Model, SerializerMixin):
 
     fusion_uses = relationship('Fusion', secondary='ingredient', back_populates="ingredients")
     fusion_recipes = relationship('Fusion', back_populates='result')
+
+
+    @property
+    def resistances(self):
+        return str(Resist.from_code(self.resists))
+
+
+    @resistances.setter
+    def _(self, str_value):
+        self.resists = Resist(str_value).code
+
 
     def __repr__(self):
         return f'Demon({self.name})'
