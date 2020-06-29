@@ -8,6 +8,7 @@ from flask_cors import CORS
 from .flask_extensions import db
 
 from .api.demons import blueprint as demons_blueprint
+from .api.images import blueprint as images_blueprint
 
 
 def create_app():
@@ -29,7 +30,14 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    app.register_blueprint(demons_blueprint)
+
+    blueprints = [
+        demons_blueprint,
+        images_blueprint,
+    ]
+
+    for blueprint in blueprints:
+        app.register_blueprint(blueprint)
 
 
 def configure_logger(app):
