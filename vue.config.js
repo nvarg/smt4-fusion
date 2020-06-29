@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   chainWebpack: config => {
@@ -10,6 +11,11 @@ module.exports = {
 
     config.resolve.alias
       .set('@', path.join(__dirname, './frontend'));
+  },
+  configureWebpack: {
+    plugins: [
+      new webpack.EnvironmentPlugin(['API']),
+    ]
   }
 }
 
