@@ -1,3 +1,5 @@
+import functools
+
 from flask import current_app as app
 from webargs.multidictproxy import MultiDictProxy
 from webargs.flaskparser import parser
@@ -20,3 +22,17 @@ def load_data(request, schema):
     data = request.args.copy()
     data.update(request.get_json() or {})
     return MultiDictProxy(data, schema)
+
+def freeze_args(func):
+
+    class _FrozenArgs(dict):
+        def __hash__(self):
+            return hash(frozenset(self.items()))
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        args = tuple([_FrozenArgs(arg) if isinstance(arg, dict) else arg for arg in args])
+        kwargs = {k: _FrozenArgs(v) if isinstance(v, dict) else v for k, v in kwargs.items()}
+        return func(*args, **kwargs)
+
+    return wrapped
