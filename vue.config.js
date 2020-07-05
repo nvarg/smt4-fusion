@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config
       .entry('app')
       .clear()
@@ -15,7 +15,6 @@ module.exports = {
   configureWebpack: {
     plugins: [
       new webpack.EnvironmentPlugin(['API']),
-    ]
-  }
-}
-
+    ],
+  },
+};
