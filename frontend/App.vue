@@ -1,64 +1,53 @@
 <template>
   <div id="app">
-    <div class="demon-list">
-      <DemonCard
-        v-for="demon, idx in demons"
-        :key="idx"
-        :demon="demon"
-        class="demon-list__card"
-      />
+    <h1>Shin Megami Tensei IV Tool</h1>
+    <div class="app__container no-spacing">
+      <div> <!-- allows the stock to remain in screen with position sticky -->
+        <DemonStock class="app__container__stock"/>
+      </div>
+      <DemonList class="app__container__demon-list"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import axios from 'axios';
-
-import DemonCard from '@/components/DemonCard.vue';
-import { Demon } from '@/fusion/demons';
+import DemonStock from '@/components/DemonStock.vue';
+import DemonList from '@/components/DemonList.vue';
 
 @Component({
-  components: { DemonCard },
+  components: { DemonStock, DemonList },
 })
-export default class App extends Vue {
-  demons: Demon[] = [];
-
-  mounted() {
-    for (let page = 1; page < 87; page += 1) {
-      axios.get(`${this.$api}/demons?page=${page}`).then((response) => {
-        this.demons = [...this.demons, ...response.data.results];
-      });
-    }
-  }
-}
+export default class App extends Vue { }
 </script>
 
 <style lang="scss">
+body {
+  box-sizing: border-box;
+}
+
 #app {
+  margin: auto;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  margin: 0.75em;
 }
 
-.demon-list {
+.app__container {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
 
-  & > .demon-card {
-    margin: 0 0 1.65em;
+  &__stock {
+    position: sticky;
+    top: 2.75vh;
+    min-width: 34ch;
+    margin-right: 1em;
+    height: 89vh;
   }
 
-  &__card {
-    cursor: pointer;
-    transition: transform 0.15s ease-in-out;
-  }
-
-  &__card:hover {
-    transform: translateY(-0.5em);
+  &__demon-list {
+    flex-grow: 1;
   }
 }
 
@@ -69,5 +58,9 @@ export default class App extends Vue {
 
 * + * {
   margin: 0.75em 0 0;
+}
+
+.no-spacing > * {
+  margin-top: 0;
 }
 </style>
