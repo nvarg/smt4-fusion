@@ -12,6 +12,7 @@
         :key="demon.id"
         :demon="demon"
         @remove="remove"
+        @more-info="(demon) => $emit('more-info', demon)"
         class="demon-stock__item"
       />
     </div>

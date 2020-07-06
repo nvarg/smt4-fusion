@@ -1,7 +1,6 @@
 <template>
   <div
-    @mouseenter="hover = true"
-    @mouseleave="hover = false"
+    @click="$emit('more-info', demon)"
     class="demon-stock-item no-spacing"
   >
     <img
@@ -31,18 +30,17 @@ import { Demon } from '@/fusion/demons';
 @Component
 export default class DemonStockItem extends Vue {
   @Prop({ required: true }) demon!: Demon;
-
-  hover = false
 }
 </script>
 
 <style lang="scss">
 .demon-stock-item {
   display: grid;
-  grid-template-columns: 3em 1fr auto;
   margin-top: 0;
+  grid-template-columns: 3em 1fr auto;
   padding: 0.15em 0;
   padding: 0.35em;
+  cursor: pointer;
 
   animation: 0.3s ease-out 0s 1 slideInFromLeft;
   @keyframes slideInFromLeft {

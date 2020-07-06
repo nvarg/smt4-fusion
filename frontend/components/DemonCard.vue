@@ -126,16 +126,6 @@ export default class DemonCard extends Vue {
   font-size: 0.8rem;
   margin-bottom: 1em;
 
-  animation: 0.3s ease-out 0s 1 loadcardanim;
-  @keyframes loadcardanim {
-    0% {
-      transform: scale(1.05);
-    }
-    100% {
-      transform: scale(0.95);
-    }
-  }
-
   &.held {
     transform: scale(0.95) !important;
     filter: brightness(0.9);

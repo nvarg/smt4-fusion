@@ -64,17 +64,12 @@
     <div class="demon-list__grid no-spacing">
       <DemonCard
         v-for="demon in demons"
-        @more-info="moreInfo"
+        @more-info="(demon) => $emit('more-info', demon)"
         :key="demon.id"
         :demon="demon"
         class="demon-list__grid__card"
       />
     </div>
-    <DemonInfo
-      :demon="demonInfoDemon"
-      class="demon-list__demon-info hidden"
-      ref="demon-info"
-    />
     <LazyLoader
       :load-more="loadMore"
       ref="lazy-loader"
@@ -91,16 +86,13 @@ import axios from 'axios';
 
 import DemonCard from '@/components/DemonCard.vue';
 import LazyLoader from '@/components/LazyLoader.vue';
-import DemonInfo from '@/components/DemonInfo.vue';
 import { Demon } from '@/fusion/demons';
 
 @Component({
-  components: { DemonCard, LazyLoader, DemonInfo },
+  components: { DemonCard, LazyLoader },
 })
 export default class DemonList extends Vue {
   demons: Demon[] = [];
-
-  demonInfoDemon: Demon | object = {};
 
   hasNext = true;
 
@@ -140,8 +132,6 @@ export default class DemonList extends Vue {
 
   @Ref('lazy-loader') readonly lazyLoader!: LazyLoader;
 
-  @Ref('demon-info') readonly demonInfoModal!: DemonInfo;
-
   @Watch('settings', { deep: true })
   reset() {
     const data = Object.entries(this.settings).filter(([, value]) => value);
@@ -173,11 +163,6 @@ export default class DemonList extends Vue {
         observer.observe(el);
       });
     }
-  }
-
-  moreInfo(demon: Demon) {
-    this.demonInfoDemon = demon;
-    this.demonInfoModal.$el.classList.remove('hidden');
   }
 }
 </script>
@@ -283,25 +268,28 @@ export default class DemonList extends Vue {
 
     &__card {
       cursor: grab;
+      box-shadow: 0em 2.25em 2em -3em rgba(0, 0, 0, 0.65);
       transform: scale(0.95);
-      transform-style: preserve-3d;
       transition: transform 0.15s ease-in,
                   box-shadow 0.15s ease-in;
-      box-shadow: 0em 2.25em 2em -3em rgba(0, 0, 0, 0.65);
+
+      animation: 0.3s ease-out 0s 1 loadcardanim;
+      @keyframes loadcardanim {
+        0% {
+          transform: scale(1);
+          box-shadow: 0em 2.25em 2em -2em rgba(0, 0, 0, 0.65);
+        }
+        100% {
+          transform: scale(0.95);
+          box-shadow: 0em 2.25em 2em -3em rgba(0, 0, 0, 0.65);
+        }
+      }
     }
 
     &__card:hover {
       transform: translateY(-1.5em) scale(1);
       box-shadow: 0em 2.25em 2em -2em rgba(0, 0, 0, 0.65);
     }
-  }
-
-  &__demon-info {
-    position: fixed;
-    top: 5vh;
-    left: 5vw;
-    right: 5vw;
-    bottom: 5vh;
   }
 
   &__lazy-loader {
