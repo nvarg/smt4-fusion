@@ -10,19 +10,17 @@
       :x2='point.x' :y2='point.y'
       class='statgram__axis'
     />
-
     <polygon class='statgram__grid'
-      v-for="idx in Array(nticks).keys()" :key='`grid-${idx}`'
+      v-for="idx in Array(nticks).keys()"
+      :key='`grid-${idx}`'
       :points='svgPointString(equallySpacedPoints((idx + 1) * size / nticks / 2 - 10))'
     />
-
     <polygon
       :points='svgPointString(points)'
       :fill="fill"
       :stroke="stroke"
       class='statgram__gon'
     />
-
     <text
       v-for="(point, idx) in equallySpacedPoints(size * 1.05 / 2)"
       :key='labels[idx]'
@@ -32,12 +30,11 @@
     >
       {{ labels[idx] }}
     </text>
-
     <text
       v-for='(point, idx) in tooltipPoints'
       :key='`tooltip-${idx}`'
       :x='point.x' :y='point.y'
-      class='statgram__tooltip__text'
+      class='statgram__tooltip'
     >
       {{ stats[idx] }}
     </text>
@@ -137,19 +134,12 @@ export default class Statgram extends Vue {
   }
 
   &__tooltip {
-    &__collision {
-        opacity: 0;
-    }
-
-    &__text {
-      font-size: 1.5rem;
-      transition: opacity 250ms ease-in;
-      opacity: 0;
-
-    }
+    font-size: 1.5rem;
+    transition: opacity 250ms ease-in;
+    opacity: 0;
   }
 
-  &:hover &__tooltip__text {
+  &:hover &__tooltip {
     opacity: 1;
   }
 

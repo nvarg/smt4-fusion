@@ -13,7 +13,7 @@
     />
     <div class="demon-info__lore">
       <h3>Lore</h3>
-      <p>{{ loreText }}</p>
+      <p v-for="(loreText, idx) in lore" :key="idx">{{ loreText }}</p>
     </div>
     <div class="demon-info__stats">
       <Statgram
@@ -30,13 +30,19 @@
     </div>
     <div class="demon-info__skill">
       <h3>Skills</h3>
+      <h3>Level Up Skills</h3>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-// import axios from 'axios';
+import {
+  Component,
+  Vue,
+  Prop,
+  Watch,
+} from 'vue-property-decorator';
+import axios from 'axios';
 
 import { Demon } from '@/fusion/demons';
 import DemonCard from '@/components/DemonCard.vue';
@@ -48,14 +54,21 @@ import Statgram from '@/components/Statgram.vue';
 export default class DemonInfo extends Vue {
   @Prop({ required: true }) demon!: Demon;
 
+  lore: string[] = [];
+
+  cancelToken = axios.CancelToken.source();
+
   close() {
     this.$el.classList.add('hidden');
   }
 
-  get loreText() {
-    // eslint-disable-next-line
-    const lore = this.demon.name + "Skate ipsum dolor sit amet, grind 270 Alan Gelfand chicken wing slappy. Billy Ruff bail full pipe varial 50-50. Helipop Primo slide no comply gap Mark Gonzales. 540 ollie north casper slide front foot impossible. Pushead skater durometer axle opposite footed. Quarter pipe camel back rails slob air. Berm wall ride heel flip mini ramp. Sims rip grip 720 regular footed half-cab. Bearings kickturn g-turn dude. Shinner skater boardslide gnar bucket. Kickturn nose grab Matt Hensley axle set crail slide. Full pipe Streetstyle in Tempe nosepicker risers transition. Salad grind flypaper nosepicker crail grab frontside air. Fakie durometer locals slide indy grab. Ho-ho Kevin Harris Jason Dill nose grab speed wobbles finger flip.";
-    return lore;
+  @Watch('demon')
+  updateLoreText() {
+    axios.get(`${this.$api}/demons/${this.demon.id}/lore`, {
+      cancelToken: this.cancelToken.token,
+    }).then(
+      (response) => { this.lore = response.data as string[]; },
+    );
   }
 
   get imageUrl() {
@@ -84,6 +97,7 @@ export default class DemonInfo extends Vue {
 <style lang="scss">
 .demon-info {
   display: grid;
+  grid-gap: 1em;
   background-color: #cecece;
   border: 0.15em solid gray;
   border-radius: 0.25em;
@@ -126,6 +140,20 @@ export default class DemonInfo extends Vue {
 
   &__lore {
     grid-area: 2/2;
+    position: relative;
+    max-height: 100%;
+    overflow: hidden;
+    line-height: 1.5;
+
+    &::after {
+      position: absolute;
+      display: block;
+      content: '';
+      bottom: 0;
+      width: 100%;
+      height: 25%;
+      background-image: linear-gradient(to bottom, transparent, #cecece);
+    }
   }
 
   &__fusions {

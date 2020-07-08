@@ -2,6 +2,7 @@ from sqlalchemy import desc
 from flask import Blueprint, jsonify, request, abort
 from webargs import fields, validate
 from webargs.flaskparser import parser
+from requests_html import HTMLSession
 
 from ..flask_extensions import db
 from ..models.demons import Demon, Race
@@ -43,3 +44,16 @@ def get_all(args):
         query = query.filter(Demon.name.ilike(f'%{name}%'))
 
     return jsonify(paginate(args['page'], query))
+
+@blueprint.route('/demons/<int:demon_id>/lore', methods=['GET'], strict_slashes=False)
+def lore_text(demon_id):
+    demon_name = db.session.query(Demon).get(demon_id).name
+    session = HTMLSession()
+
+    wiki_url = f'https://megamitensei.fandom.com/wiki/{demon_name}'
+    response_html = session.get(wiki_url).html
+
+    text = [el.text for el in response_html.find('nav.toc + h2 + p, nav.toc + h2 + p + p')]
+    return jsonify(text)
+
+

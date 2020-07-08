@@ -98,6 +98,8 @@ export default class DemonList extends Vue {
 
   nextPage = 1;
 
+  cancelToken = axios.CancelToken.source();
+
   defaultSettings = {
     order: 'level',
     desc: false,
@@ -135,12 +137,20 @@ export default class DemonList extends Vue {
   @Watch('settings', { deep: true })
   reset() {
     const data = Object.entries(this.settings).filter(([, value]) => value);
+
+    this.cancelToken.cancel();
+    this.cancelToken = axios.CancelToken.source();
     axios.get(`${this.$api}/demons`, {
+      cancelToken: this.cancelToken.token,
       params: { page: 1, ...Object.fromEntries(data) },
     }).then((response) => {
       this.demons = response.data.results;
       this.hasNext = response.data.has_next;
       this.nextPage = 2;
+    }).catch((thrown) => {
+      if (thrown.message) {
+        console.log(thrown.message);
+      }
     }).finally(this.lazyLoader.observe);
   }
 
