@@ -12,7 +12,7 @@ from ..utils.api import paginate, load_data
 
 blueprint = Blueprint('demons', __name__)
 
-@blueprint.route('/demons', methods=['GET'], strict_slashes=False)
+@blueprint.route('/', methods=['GET'], strict_slashes=False)
 @parser.use_args({
     'page': fields.Integer(missing=1),
     'order': fields.String(missing='level'),
@@ -45,7 +45,7 @@ def get_all(args):
 
     return jsonify(paginate(args['page'], query))
 
-@blueprint.route('/demons/<int:demon_id>/lore', methods=['GET'], strict_slashes=False)
+@blueprint.route('/<int:demon_id>/lore', methods=['GET'], strict_slashes=False)
 def lore_text(demon_id):
     demon_name = db.session.query(Demon).get(demon_id).name
     session = HTMLSession()
