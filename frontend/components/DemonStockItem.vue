@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Demon } from '@/fusion/demons';
+import { Demon } from '@/smt4';
 
 @Component
 export default class DemonStockItem extends Vue {
@@ -41,16 +41,6 @@ export default class DemonStockItem extends Vue {
   padding: 0.15em 0;
   padding: 0.35em;
   cursor: pointer;
-
-  animation: 0.3s ease-out 0s 1 slideInFromLeft;
-  @keyframes slideInFromLeft {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
 
   & + & {
     margin-top: 0.22em;
