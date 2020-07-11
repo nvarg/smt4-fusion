@@ -6,7 +6,9 @@
     @dragleave.prevent="dragLeave"
     class="demon-stock">
     <h2>Stock ({{ demons.length }} / 20)</h2>
-    <div>
+    <transition-group
+      name="demon-stock__item-"
+    >
       <DemonStockItem
         v-for="demon in demons"
         :key="demon.id"
@@ -15,21 +17,40 @@
         @more-info="(demon) => $emit('more-info', demon)"
         class="demon-stock__item"
       />
-    </div>
+    </transition-group>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { Demon } from '@/fusion/demons';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import axios from 'axios';
 
 import DemonStockItem from '@/components/DemonStockItem.vue';
+import { Demon } from '@/smt4';
 
 @Component({
   components: { DemonStockItem },
 })
 export default class DemonStock extends Vue {
   demons: Demon[] = []
+
+  mounted() {
+    const demons = document?.cookie
+      ?.split('; ')
+      ?.find((c) => c.startsWith('stock'))
+      ?.split('=')[1];
+
+    axios.get(`${this.$api}/demons`, {
+      params: { ids: demons },
+    }).then((response) => {
+      this.demons = response.data;
+    });
+  }
+
+  @Watch('demons')
+  save() {
+    document.cookie = `stock=${this.demons.map((d) => d.id)}`;
+  }
 
   drop(event: DragEvent) {
     this.dragLeave();
@@ -70,9 +91,25 @@ export default class DemonStock extends Vue {
 
 <style lang="scss">
 .demon-stock {
+  display: flex;
+  flex-direction: column;
   outline: 0.125em dotted sandybrown;
   overflow-y: auto;
   padding: 1em;
+
+  &__item {
+    &--enter, &--leave-to {
+      transform: translateX(-100%);
+    }
+
+    &--enter-active {
+      transition: all 0.6s ease;
+    }
+
+    &--leave-active {
+      transition: all 0.2s ease;
+    }
+  }
 
   &.drag-over {
     outline: 0.25em solid sandybrown;
