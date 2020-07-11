@@ -12,3 +12,12 @@ export interface Demon {
   agility: number;
   luck: number;
 }
+
+export interface Skill {
+  name: string;
+  type: string;
+  damage?: string;
+  effect?: string;
+  hits?: string;
+  target?: string;
+}

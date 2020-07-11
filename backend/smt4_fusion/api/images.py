@@ -13,8 +13,9 @@ from ..utils.images import crop_to_content, replace_alpha, crop_largest_object
 
 blueprint = Blueprint('images', __name__)
 
-@blueprint.route('/images/<path:filename>', methods=['GET'], strict_slashes=False)
+@blueprint.route('/<path:filename>', methods=['GET'], strict_slashes=False)
 @parser.use_args({
+    'crop': fields.Boolean(missing=True),
     'max_height': fields.Integer(missing=200),
     'max_width': fields.Integer(missing=200),
     'background_color': fields.String(missing='#fff'),
@@ -24,12 +25,14 @@ blueprint = Blueprint('images', __name__)
 def get(args, filename):
     try:
         with Image.open(f'data/images/{filename}.png', mode='r') as image:
-            cleaned_image = crop_largest_object(image)
-
-            cleaned_image = crop_to_content(
-                img=cleaned_image,
-                bg_color=getrgb('#0000')
-            )
+            if args['crop']:
+                cleaned_image = crop_largest_object(image)
+                cleaned_image = crop_to_content(
+                    img=cleaned_image,
+                    bg_color=getrgb('#0000')
+                )
+            else:
+                cleaned_image = image
 
             cleaned_image = replace_alpha(
                 img=cleaned_image,

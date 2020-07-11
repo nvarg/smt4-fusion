@@ -61,7 +61,11 @@
         Reset
       </button>
     </div>
-    <div class="demon-list__grid no-spacing">
+    <transition-group
+      name="demon-list__grid__card-"
+      tag="div"
+      class="demon-list__grid no-spacing"
+    >
       <DemonCard
         v-for="demon in demons"
         @more-info="(demon) => $emit('more-info', demon)"
@@ -69,7 +73,7 @@
         :demon="demon"
         class="demon-list__grid__card"
       />
-    </div>
+    </transition-group>
     <LazyLoader
       :load-more="loadMore"
       ref="lazy-loader"
@@ -86,7 +90,7 @@ import axios from 'axios';
 
 import DemonCard from '@/components/DemonCard.vue';
 import LazyLoader from '@/components/LazyLoader.vue';
-import { Demon } from '@/fusion/demons';
+import { Demon } from '@/smt4';
 
 @Component({
   components: { DemonCard, LazyLoader },
@@ -271,6 +275,8 @@ export default class DemonList extends Vue {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
+    position: relative;
+    min-height: 85vh;
 
     & > .demon-card {
       margin-bottom: 1.65em;
@@ -283,16 +289,12 @@ export default class DemonList extends Vue {
       transition: transform 0.15s ease-in,
                   box-shadow 0.15s ease-in;
 
-      animation: 0.3s ease-out 0s 1 loadcardanim;
-      @keyframes loadcardanim {
-        0% {
-          transform: scale(1);
-          box-shadow: 0em 2.25em 2em -2em rgba(0, 0, 0, 0.65);
-        }
-        100% {
-          transform: scale(0.95);
-          box-shadow: 0em 2.25em 2em -3em rgba(0, 0, 0, 0.65);
-        }
+      &--enter-active, &--leave-active {
+        transition: all 0.6s ease;
+      }
+
+      &--move {
+        transition: all 0.6s;
       }
     }
 

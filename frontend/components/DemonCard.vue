@@ -26,7 +26,10 @@
         :key="idx"
         class="demon-card__stats__stat demon-card__stats__stat--resistance"
       >
-        <img class="element-icon" :src="`icons/elements/${idx}.png`" />
+        <img
+          :src="resistIcons[idx]"
+          class="element-icon"
+        />
         <div
           :class="`resistance-${resist[resistance]}`"
         >
@@ -76,7 +79,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Demon } from '@/fusion/demons';
+import { Demon } from '@/smt4';
 
 @Component
 export default class DemonCard extends Vue {
@@ -90,6 +93,17 @@ export default class DemonCard extends Vue {
     n: 'Nu',
     d: 'Dr',
   }
+
+  resistIcons = [
+    `${this.$api}/images/icons/Physical?crop=false&background_color=%23ffb114`,
+    `${this.$api}/images/icons/Gun?crop=false&background_color=%23ffb114`,
+    `${this.$api}/images/icons/Fire?crop=false&background_color=%23ffb114`,
+    `${this.$api}/images/icons/Ice?crop=false&background_color=%23ffb114`,
+    `${this.$api}/images/icons/Electric?crop=false&background_color=%23ffb114`,
+    `${this.$api}/images/icons/Force?crop=false&background_color=%23ffb114`,
+    `${this.$api}/images/icons/Light?crop=false&background_color=%23ffb114`,
+    `${this.$api}/images/icons/Dark?crop=false&background_color=%23ffb114`,
+  ]
 
   get paddedID() {
     return String(this.demon.id).padStart(3, '0');

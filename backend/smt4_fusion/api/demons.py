@@ -22,7 +22,7 @@ blueprint = Blueprint('demons', __name__)
     'name': fields.String(),
     'ids': fields.DelimitedList(fields.Integer(), delimiter=','),
 }, location='query_and_json')
-def get_all(args):
+def demon_query(args):
     query = db.session.query(Demon)
 
     if (ids := args.get('ids')):
@@ -46,7 +46,7 @@ def get_all(args):
     return jsonify(paginate(args['page'], query))
 
 @blueprint.route('/<int:demon_id>/lore', methods=['GET'], strict_slashes=False)
-def lore_text(demon_id):
+def demon_lore(demon_id):
     demon_name = db.session.query(Demon).get(demon_id).name
     session = HTMLSession()
 
@@ -57,3 +57,14 @@ def lore_text(demon_id):
     return jsonify(text)
 
 
+@blueprint.route('/<int:demon_id>/skills', methods=['GET'], strict_slashes=False)
+def demon_skills(demon_id):
+    learn_skills = db.session.query(Demon).get(demon_id).learn_skills
+
+    innate_skills = [s.skill.to_dict() for s in learn_skills if s.level == 0]
+    level_up_skills = { s.level: s.skill.to_dict() for s in reversed(learn_skills) if s.level > 0 }
+
+    return jsonify({
+        'level_up': level_up_skills,
+        'innate': innate_skills,
+    })

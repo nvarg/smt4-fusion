@@ -42,8 +42,7 @@ class Type(Enum):
 
 class Skill(db.Model, SerializerMixin):
     __tablename__ = "skill"
-    serialize_only = ('name', 'type', 'target', 'damage',
-                      'hits', 'effect', 'demons.id', 'demons.name')
+    serialize_only = ('name', 'type', 'target', 'damage', 'hits', 'effect')
 
     id = Column(types.Integer, primary_key=True, autoincrement=True)
     name = Column(types.String, nullable=False)

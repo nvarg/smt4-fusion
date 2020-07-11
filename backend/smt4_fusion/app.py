@@ -31,13 +31,13 @@ def register_extensions(app):
 
 def register_blueprints(app):
 
-    blueprints = [
-        demons_blueprint,
-        images_blueprint,
-    ]
+    blueprints = {
+        '/demons': demons_blueprint,
+        '/images': images_blueprint,
+    }
 
-    for blueprint in blueprints:
-        app.register_blueprint(blueprint, url_prefix='/demons')
+    for prefix, blueprint in blueprints.items():
+        app.register_blueprint(blueprint, url_prefix=prefix)
 
 
 def configure_logger(app):

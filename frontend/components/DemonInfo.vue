@@ -6,6 +6,9 @@
     >
       close
     </div>
+    <h2 class="demon-info__title">
+      {{ demon.name }}
+    </h2>
     <img
       :src="imageUrl"
       draggable="false"
@@ -13,7 +16,13 @@
     />
     <div class="demon-info__lore">
       <h3>Lore</h3>
-      <p v-for="(loreText, idx) in lore" :key="idx">{{ loreText }}</p>
+      <transition-group appear
+        name="demon-info__lore-"
+        mode="out-in"
+        tag="div"
+      >
+        <p v-for="loreText in lore" :key="loreText">{{ loreText }}</p>
+      </transition-group>
     </div>
     <div class="demon-info__stats">
       <Statgram
@@ -25,12 +34,27 @@
         fill="rgba(255, 177, 20, 0.75)"
       />
     </div>
-    <div class="demon-info__fusions">
-      <h3>Fusions</h3>
-    </div>
-    <div class="demon-info__skill">
+    <div class="demon-info__skills">
       <h3>Skills</h3>
+        <transition-group appear
+          name="demon-info__skills-"
+        >
+          <SkillInfo
+            v-for="skill in innateSkills" :key="skill.name"
+            :skill="skill"
+          />
+        </transition-group>
       <h3>Level Up Skills</h3>
+        <transition-group appear
+          name="demon-info__skills-"
+        >
+          <SkillInfo
+             v-for="(skill, level) in levelupSkills" :key="skill.name"
+            :level="level"
+            :skill="skill"
+          />
+        </transition-group>
+      <h3>Fusions</h3>
     </div>
   </div>
 </template>
@@ -44,19 +68,27 @@ import {
 } from 'vue-property-decorator';
 import axios from 'axios';
 
-import { Demon } from '@/fusion/demons';
 import DemonCard from '@/components/DemonCard.vue';
 import Statgram from '@/components/Statgram.vue';
+import SkillInfo from '@/components/SkillInfo.vue';
+
+import { Demon, Skill } from '@/smt4';
 
 @Component({
-  components: { DemonCard, Statgram },
+  components: { DemonCard, Statgram, SkillInfo },
 })
 export default class DemonInfo extends Vue {
   @Prop({ required: true }) demon!: Demon;
 
   lore: string[] = [];
 
-  cancelToken = axios.CancelToken.source();
+  loreCancelToken = axios.CancelToken.source();
+
+  innateSkills: Skill[] = []
+
+  levelupSkills: { [level: number]: Skill[] } = {}
+
+  skillsCancelToken = axios.CancelToken.source();
 
   close() {
     this.$el.classList.add('hidden');
@@ -64,10 +96,27 @@ export default class DemonInfo extends Vue {
 
   @Watch('demon')
   updateLoreText() {
+    this.lore = [];
+    this.loreCancelToken = axios.CancelToken.source();
     axios.get(`${this.$api}/demons/${this.demon.id}/lore`, {
-      cancelToken: this.cancelToken.token,
+      cancelToken: this.loreCancelToken.token,
     }).then(
       (response) => { this.lore = response.data as string[]; },
+    );
+  }
+
+  @Watch('demon')
+  updateSkillList() {
+    this.innateSkills = [];
+    this.levelupSkills = {};
+    this.skillsCancelToken = axios.CancelToken.source();
+    axios.get(`${this.$api}/demons/${this.demon.id}/skills`, {
+      cancelToken: this.skillsCancelToken.token,
+    }).then(
+      (response) => {
+        this.innateSkills = response.data.innate;
+        this.levelupSkills = response.data.level_up;
+      },
     );
   }
 
@@ -106,6 +155,12 @@ export default class DemonInfo extends Vue {
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr 2fr;
 
+  animation: modalFadein 0.5s ease-in;
+  @keyframes modalFadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
   &.hidden {
     display: none;
   }
@@ -127,10 +182,24 @@ export default class DemonInfo extends Vue {
     }
   }
 
+  &__title {
+    grid-area: 1/1;
+  }
+
   &__image {
     margin: auto;
     margin-top: auto !important;
     grid-area: 1/1/3/2;
+
+    animation: 0.3s ease-out 0s 1 imageFadeIn;
+    @keyframes imageFadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
   }
 
   &__stats {
@@ -144,6 +213,18 @@ export default class DemonInfo extends Vue {
     max-height: 100%;
     overflow: hidden;
     line-height: 1.5;
+
+    &--enter-active {
+      transition: opacity 1s ease;
+    }
+
+    &--enter {
+      opacity: 0;
+    }
+
+    &--enter-to {
+      opacity: 1;
+    }
 
     &::after {
       position: absolute;
@@ -161,7 +242,17 @@ export default class DemonInfo extends Vue {
   }
 
   &__skills {
-    grid-area: 3/3;
+    grid-area: 1/3/4/4;
+
+    &--enter-active {
+      transition: all 0.6s ease;
+      transform-origin: left;
+    }
+
+    &--enter, leave-to {
+      transform: scaleX(0%);
+      opacity: 0;
+    }
   }
 }
 </style>

@@ -27,7 +27,7 @@ import DemonStock from '@/components/DemonStock.vue';
 import DemonList from '@/components/DemonList.vue';
 import DemonInfo from '@/components/DemonInfo.vue';
 
-import { Demon } from '@/fusion/demons';
+import { Demon } from './smt4';
 
 @Component({
   components: { DemonStock, DemonList, DemonInfo },
