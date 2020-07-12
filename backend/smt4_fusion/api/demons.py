@@ -1,4 +1,4 @@
-from sqlalchemy import desc
+from sqlalchemy import desc, alias
 from flask import Blueprint, jsonify, request, abort
 from webargs import fields, validate
 from webargs.flaskparser import parser
@@ -68,3 +68,21 @@ def demon_skills(demon_id):
         'level_up': level_up_skills,
         'innate': innate_skills,
     })
+
+@blueprint.route('/<int:demon_id>/recipes', methods=['GET'], strict_slashes=False, defaults={'page': 1})
+@blueprint.route('/<int:demon_id>/recipes/<int:page>', methods=['GET'], strict_slashes=False)
+def demon_recipes(demon_id, page):
+    recipes = db.session.query(Fusion) \
+                        .join(Demon, Fusion.result) \
+                        .filter(Demon.id == demon_id)
+
+    return jsonify(paginate(page, recipes))
+
+@blueprint.route('/<int:demon_id>/uses', methods=['GET'], strict_slashes=False, defaults={'page': 1})
+@blueprint.route('/<int:demon_id>/uses/<int:page>', methods=['GET'], strict_slashes=False)
+def demon_uses(demon_id, page):
+    recipes = db.session.query(Fusion) \
+                        .join(Demon, Fusion.ingredients) \
+                        .filter(Demon.id == demon_id)
+
+    return jsonify(paginate(page, recipes))

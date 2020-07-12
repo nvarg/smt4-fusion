@@ -24,7 +24,6 @@ class Fusion(db.Model, SerializerMixin):
 
     id = Column(types.Integer, primary_key=True, autoincrement=True)
 
-
     result_id = Column(types.Integer, ForeignKey('demon.id'), nullable=False)
 
     ingredients = relationship('Demon', secondary=Ingredient.__table__, back_populates="fusion_uses")
