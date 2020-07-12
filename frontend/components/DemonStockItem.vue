@@ -4,16 +4,11 @@
     class="demon-stock-item no-spacing"
   >
     <img
-      :src="`${$api}/images/charicon/charicon${String(demon.id).padStart(3, '0')}`"
+      :src="`${$api}/images/charicon/charicon${String(demon.id).padStart(3, '0')}?crop=false`"
       draggable="false"
       class="demon-stock-item__charicon"
     />
-    <div class="demon-stock-item__name">
-      <span>Lv.</span>{{ demon.level }} {{ demon.name }}
-    </div>
-    <div class="demon-stock-item__race">
-      {{ demon.race }}
-    </div>
+    <DemonHeadline :demon="demon" />
     <a
       @click="$emit('remove', demon.id)"
       class="demon-stock-item__remove no-spacing"
@@ -27,7 +22,11 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Demon } from '@/smt4';
 
-@Component
+import DemonHeadline from '@/components/DemonHeadline.vue';
+
+@Component({
+  components: { DemonHeadline },
+})
 export default class DemonStockItem extends Vue {
   @Prop({ required: true }) demon!: Demon;
 }
@@ -35,10 +34,7 @@ export default class DemonStockItem extends Vue {
 
 <style lang="scss">
 .demon-stock-item {
-  display: grid;
-  margin-top: 0;
-  grid-template-columns: 3em 1fr auto;
-  padding: 0.15em 0;
+  display: flex;
   padding: 0.35em;
   cursor: pointer;
 
@@ -48,29 +44,19 @@ export default class DemonStockItem extends Vue {
 
   &__charicon {
     object-fit: contain;
-    grid-area: 1/1/3/2;
-    align-self: center;
-    justify-self: start;
   }
 
-  &__name {
-    span {
-      font-size: 0.75rem;
+  .demon-headline {
+    flex-grow: 1;
+    margin-left: 1em;
+
+    &__race {
+      color: gray;
     }
-  }
-
-  &__race {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: gray;
-    grid-area: 2/2/3/3;
   }
 
   &__remove {
     cursor: pointer;
-    align-self: center;
-    justify-self: end;
-    grid-area: 1/3/3;
     color: #f01143;
     padding: 0.25em 0.65em;
     border-radius: 0.35em;
@@ -78,6 +64,7 @@ export default class DemonStockItem extends Vue {
     font-size: 0.8rem;
     border: 0.125em solid #f01143;
     display: flex;
+    align-self: center;
 
     div {
       transition: transform 0.0s ease-in;

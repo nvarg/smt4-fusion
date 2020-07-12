@@ -4,18 +4,8 @@
     @dragstart="dragStart"
     @dragend="dragEnd"
     class="demon-card">
-    <div class="demon-card__headline">
-      <div class="demon-card__headline__level">
-        <span style="font-size: 0.75em">Lv.</span>{{ demon.level }}
-      </div>
-      <div class="demon-card__headline__name no-spacing">
-        {{ demon.name }}
-      </div>
-      <div class="demon-card__headline__race">
-        {{ demon.race }}
-      </div>
-      <div class="demon-card__headline__info" @click="$emit('more-info', demon)">&#9432;</div>
-    </div>
+    <DemonHeadline :demon="demon" />
+    <div class="demon-card__info" @click="$emit('more-info', demon)">&#9432;</div>
     <img
       class="demon-card__image"
       :src="imageUrl"
@@ -32,6 +22,7 @@
         />
         <div
           :class="`resistance-${resist[resistance]}`"
+          class="outline"
         >
           {{ resist[resistance] }}
         </div>
@@ -81,7 +72,11 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Demon } from '@/smt4';
 
-@Component
+import DemonHeadline from '@/components/DemonHeadline.vue';
+
+@Component({
+  components: { DemonHeadline },
+})
 export default class DemonCard extends Vue {
   @Prop({ required: true }) readonly demon!: Demon;
 
@@ -147,6 +142,20 @@ export default class DemonCard extends Vue {
     outline-offset: 0.15em;
   }
 
+  .demon-headline {
+    &__name {
+      font-weight: bold;
+      text-shadow: -0.75px -0.75px 0 #fff,
+                   0.75px -0.75px 0 #fff,
+                   -0.75px 0.75px 0 #fff,
+                   0.75px 0.75px 0 #fff;
+    }
+
+    &__race {
+      font-weight: 400;
+    }
+  }
+
   &__image {
     width: 100%;
     max-width: 232px;
@@ -154,46 +163,21 @@ export default class DemonCard extends Vue {
     object-fit: contain;
   }
 
-  &__headline {
-    display: grid;
-    grid-template-columns: min-content auto;
-
-    & > * {
-      margin: 0;
-    }
-
-    &__level {
-      grid-area: 1/1;
-      padding-right: 0.5ch;
-      font-weight: 700;
-    }
-
-    &__name {
-      font-weight: 700;
-      grid-area: 1/2;
-    }
-
-    &__race {
-      font-size: 0.75em;
-      grid-area: 2/1/3/3;
-      text-transform: uppercase;
-    }
-
-    &__info {
-      display: none;
-      position: absolute;
-      right: 0.5ch;
-      top: 0;
-      font-size: 2rem;
-      color: darkcyan;
-      font-weight: bold;
-      font-style: italic;
-      cursor: pointer;
-    }
+  &__info {
+    position: absolute;
+    margin-top: 0;
+    right: 0.5ch;
+    top: 0;
+    font-size: 2rem;
+    color: darkcyan;
+    font-weight: bold;
+    font-style: italic;
+    cursor: pointer;
+    opacity: 0;
   }
 
-  &:hover .demon-card__headline__info {
-    display: block;
+  &:hover &__info {
+    opacity: 1;
   }
 
   &__stats {
@@ -231,6 +215,10 @@ export default class DemonCard extends Vue {
         width: 3.125ch;
         background-color: rgb(255, 177, 20);;
         padding: 0.125em;
+        text-shadow: -0.65px -0.65px 0 #fff,
+                     0.65px -0.65px 0 #fff,
+                     -0.65px 0.65px 0 #fff,
+                     0.65px 0.65px 0 #fff;
 
         .element-icon {
           display: block;
@@ -245,6 +233,7 @@ export default class DemonCard extends Vue {
 
         .resistance-–{
           color: black;
+          text-shadow: none;
         }
 
         .resistance-Wk {

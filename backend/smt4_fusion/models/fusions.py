@@ -19,7 +19,12 @@ class Ingredient(db.Model):
 @dataclass
 class Fusion(db.Model, SerializerMixin):
     __tablename__ = 'fusion'
-    serialize_only = ('ingredients.id', 'result.id', 'ingredients.name', 'result.name', 'ingredients.race', 'result.race')
+    serialize_only = (
+        'id', 'ingredients.id', 'result.id',
+        'ingredients.name', 'result.name',
+        'ingredients.race', 'result.race',
+        'ingredients.level', 'result.level',
+    )
     serialize_rules = ()
 
     id = Column(types.Integer, primary_key=True, autoincrement=True)

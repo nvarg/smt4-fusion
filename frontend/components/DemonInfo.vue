@@ -14,16 +14,6 @@
       draggable="false"
       class="demon-info__image"
     />
-    <div class="demon-info__lore">
-      <h3>Lore</h3>
-      <transition-group appear
-        name="demon-info__lore-"
-        mode="out-in"
-        tag="div"
-      >
-        <p v-for="loreText in lore" :key="loreText">{{ loreText }}</p>
-      </transition-group>
-    </div>
     <div class="demon-info__stats">
       <Statgram
         :num="7"
@@ -34,10 +24,21 @@
         fill="rgba(255, 177, 20, 0.75)"
       />
     </div>
-    <div class="demon-info__skills">
+    <div class="demon-info__lore">
+      <h3>Lore</h3>
+      <transition-group appear
+        name="demon-info__lore-"
+        mode="out-in"
+        tag="div"
+      >
+        <p v-for="loreText in lore" :key="loreText">{{ loreText }}</p>
+      </transition-group>
+    </div>
+    <div class="demon-info__data">
       <h3>Skills</h3>
         <transition-group appear
-          name="demon-info__skills-"
+          name="demon-info__data__skills-"
+          class="demon-info__data__skills"
         >
           <SkillInfo
             v-for="skill in innateSkills" :key="skill.name"
@@ -46,7 +47,8 @@
         </transition-group>
       <h3>Level Up Skills</h3>
         <transition-group appear
-          name="demon-info__skills-"
+          name="demon-info__data__skills-"
+          class="demon-info__data__skills"
         >
           <SkillInfo
              v-for="(skill, level) in levelupSkills" :key="skill.name"
@@ -54,7 +56,34 @@
             :skill="skill"
           />
         </transition-group>
-      <h3>Fusions</h3>
+      <h3>Fusion Recipes</h3>
+        <transition-group appear
+          name="demon-info__data__fusions-"
+          class="demon-info__data__fusions"
+          tag="div"
+        >
+          <div
+            v-for="recipe in recipes" :key="recipe.id"
+            class="demon-info__data__fusions__recipe no-spacing"
+          >
+            <template
+              v-for="ingredient in recipe.ingredients"
+            >
+              <img
+                :src="`${$api}/images/charicon/charicon${String(ingredient.id).padStart(3, '0')}`
+                   + '?background_color=%23cecece&crop=false'"
+                :key="`img-${ingredient.id}`"
+                width="30"
+                height="14"
+                draggable="false"
+              />
+              <DemonHeadline
+                :demon="ingredient"
+                :key="ingredient.id"
+              />
+            </template>
+          </div>
+        </transition-group>
     </div>
   </div>
 </template>
@@ -71,11 +100,17 @@ import axios from 'axios';
 import DemonCard from '@/components/DemonCard.vue';
 import Statgram from '@/components/Statgram.vue';
 import SkillInfo from '@/components/SkillInfo.vue';
+import DemonHeadline from '@/components/DemonHeadline.vue';
 
 import { Demon, Skill } from '@/smt4';
 
 @Component({
-  components: { DemonCard, Statgram, SkillInfo },
+  components: {
+    DemonCard,
+    Statgram,
+    SkillInfo,
+    DemonHeadline,
+  },
 })
 export default class DemonInfo extends Vue {
   @Prop({ required: true }) demon!: Demon;
@@ -90,32 +125,55 @@ export default class DemonInfo extends Vue {
 
   skillsCancelToken = axios.CancelToken.source();
 
+  recipes: { ingredients: Demon[]; result: Demon }[] = []
+
+  recipesCancelToken = axios.CancelToken.source();
+
   close() {
     this.$el.classList.add('hidden');
   }
 
   @Watch('demon')
   updateLoreText() {
-    this.lore = [];
     this.loreCancelToken = axios.CancelToken.source();
     axios.get(`${this.$api}/demons/${this.demon.id}/lore`, {
       cancelToken: this.loreCancelToken.token,
     }).then(
       (response) => { this.lore = response.data as string[]; },
+    ).finally(
+      () => {
+        this.skillsCancelToken = axios.CancelToken.source();
+      },
     );
   }
 
   @Watch('demon')
   updateSkillList() {
-    this.innateSkills = [];
-    this.levelupSkills = {};
-    this.skillsCancelToken = axios.CancelToken.source();
     axios.get(`${this.$api}/demons/${this.demon.id}/skills`, {
       cancelToken: this.skillsCancelToken.token,
     }).then(
       (response) => {
         this.innateSkills = response.data.innate;
         this.levelupSkills = response.data.level_up;
+      },
+    ).finally(
+      () => {
+        this.skillsCancelToken = axios.CancelToken.source();
+      },
+    );
+  }
+
+  @Watch('demon')
+  updateRecipeList() {
+    axios.get(`${this.$api}/demons/${this.demon.id}/recipes`, {
+      cancelToken: this.recipesCancelToken.token,
+    }).then(
+      (response) => {
+        this.recipes = response.data.results;
+      },
+    ).finally(
+      () => {
+        this.skillsCancelToken = axios.CancelToken.source();
       },
     );
   }
@@ -153,7 +211,7 @@ export default class DemonInfo extends Vue {
   padding: 1em;
 
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 1fr 2fr;
+  grid-template-rows: repeat(2, minmax(calc(50% - 2em), 1fr));
 
   animation: modalFadein 0.5s ease-in;
   @keyframes modalFadein {
@@ -237,21 +295,44 @@ export default class DemonInfo extends Vue {
     }
   }
 
-  &__fusions {
-    grid-area: 2/3;
-  }
+  &__data {
+    grid-area: 1/3/3/4;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
-  &__skills {
-    grid-area: 1/3/4/4;
-
-    &--enter-active {
-      transition: all 0.6s ease;
-      transform-origin: left;
+    .demon-headline {
+      font-size: 0.75rem;
     }
 
-    &--enter, leave-to {
-      transform: scaleX(0%);
-      opacity: 0;
+    &__skills {
+      &--enter-active {
+        transition: all 0.6s ease;
+        transform-origin: left;
+      }
+
+      &--enter, leave-to {
+        transform: scaleX(0%);
+        opacity: 0;
+      }
+    }
+
+    &__fusions {
+      flex: 1 1 auto;
+      overflow-y: auto;
+
+      &__recipe {
+        display: flex;
+
+        img {
+          margin: auto;
+          margin-right: 0.65em;
+        }
+
+        div {
+          flex-basis: 100%;
+        }
+      }
     }
   }
 }
