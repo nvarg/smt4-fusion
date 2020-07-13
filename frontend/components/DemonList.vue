@@ -275,7 +275,7 @@ export default class DemonList extends Vue {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
-    align-content: start;
+    align-content: flex-start;
     position: relative;
     min-height: 85vh;
 

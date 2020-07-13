@@ -41,7 +41,7 @@ export default class DemonStock extends Vue {
       ?.split('=')[1];
 
     axios.get(`${this.$api}/demons`, {
-      params: { ids: demons },
+      params: { ids: demons || '' },
     }).then((response) => {
       this.demons = response.data;
     });
