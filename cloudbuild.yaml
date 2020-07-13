@@ -1,0 +1,83 @@
+steps:
+- name: node:10.15.1
+  args: ["install"]
+  id: frontend_install
+  entrypoint: npm
+
+- name: "gcr.io/cloud-builders/gcloud"
+  args:
+    - "-c"
+    - |
+        (
+            gcloud secrets versions access latest --secret=API \
+              --format "value[separator='='](name.segment(-3),format('\'{}\'', payload.data))"
+        )> secrets.env
+  id: frontend_secrets
+  entrypoint: bash
+
+- name: node:10.15.1
+  args:
+    - "-c"
+    - |
+        set -o allexport
+        source secrets.env
+        set +o allexport
+        npm run build
+  id: frontend_build
+  waitFor: [frontend_secrets, frontend_install]
+  entrypoint: bash
+
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy"]
+  id: frontend_deploy
+  waitFor: frontend_build
+
+- name: "gcr.io/cloud-builders/gcloud"
+  args:
+    - "-c"
+    - |
+        (
+            for secret in DATABASE_URI BUCKET; do
+                gcloud secrets versions access latest --secret=$secret \
+                  --format "value[separator='='](name.segment(-3),format('\'{}\'', payload.data))"
+            done
+        )> .env
+  dir: backend
+  id: backend_secrets
+  entrypoint: bash
+
+
+- name: 'python:3.8'
+  args:
+    - '-c'
+    - |
+        set -o allexport
+        source .env
+        set +o allexport
+        pip install -r requirements.txt
+        python3 populate_database.py
+  dir: backend
+  id: backend_build
+  waitFor: backend_secrets
+  entrypoint: 'bash'
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+    - '-c'
+    - |
+        set -o allexport
+        source .env
+        set +o allexport
+        gsutil cp -r $$BUCKET/images ./data
+  dir: backend
+  id: backend_data
+  waitFor: backend_secrets
+  entrypoint: 'bash'
+
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy"]
+  dir: backend
+  id: backend_deploy
+  waitFor: [backend_build, backend_data]
+
+timeout: "1600s"

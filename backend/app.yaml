@@ -1,0 +1,3 @@
+runtime: python38
+service: api
+entrypoint: gunicorn -b :$PORT smt4_fusion.app

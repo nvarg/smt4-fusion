@@ -4,3 +4,7 @@ Flask-SQLAlchemy
 SQLAlchemy-serializer
 webargs
 requests-html
+python-dotenv
+Pillow
+opencv-python
+gunicorn

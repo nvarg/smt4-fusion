@@ -4,6 +4,7 @@ import logging
 import argparse
 from flask import Flask
 from flask_cors import CORS
+from dotenv import load_dotenv
 
 from .flask_extensions import db
 
@@ -12,6 +13,7 @@ from .api.images import blueprint as images_blueprint
 
 
 def create_app():
+    load_dotenv(verbose=True)
     app = Flask(__name__.split('.')[-1])
     app.config.from_object('smt4_fusion.default_settings')
     if 'FLASK_CONFIG' in os.environ:
@@ -44,3 +46,6 @@ def configure_logger(app):
     handler = logging.StreamHandler(sys.stdout)
     if not app.logger.handlers:
         app.logger.addHandler(handler)
+
+
+application = create_app()
